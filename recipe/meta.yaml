@@ -9,7 +9,7 @@ source:
   sha256: f881be34c3178539aa7c78d3c26a1165b85f53ebbf9e1f82b1c84b6ea7742208
   patches:
 #   - 0001-Mach-O-Copy-any-dynamic-libraries-and-symlinks-to-th.patch
-    - 0002-ELF-Copy-any-dynamic-libraries-and-symlinks-to-the-c.patch
+#   - 0002-ELF-Copy-any-dynamic-libraries-and-symlinks-to-the-c.patch
 
 build:
   noarch: python
