@@ -19,6 +19,8 @@ build:
     - virtualenv = virtualenv:main
 
 requirements:
+  build:
+    - setuptools_scm >=2
   host:
     - python
     - pip
