@@ -5,7 +5,8 @@ package:
   version: {{ version }}
 
 source:
-  url: https://github.com/pypa/virtualenv/archive/{{ version }}.tar.gz
+# url: https://github.com/pypa/virtualenv/archive/{{ version }}.tar.gz
+  url: https://files.pythonhosted.org/packages/cc/d4/b0e9c0926b08ae4d3f2439bae3c370917ff8c32fc254acf7023fd131eeb0/virtualenv-{{ version }}.tar.gz
   sha256: f881be34c3178539aa7c78d3c26a1165b85f53ebbf9e1f82b1c84b6ea7742208
   patches:
 #   - 0001-Mach-O-Copy-any-dynamic-libraries-and-symlinks-to-th.patch
