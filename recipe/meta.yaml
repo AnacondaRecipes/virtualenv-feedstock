@@ -20,7 +20,7 @@ requirements:
     - python                                 # [build_platform != target_platform]
   host:
     - python
-    - pip >=18
+    - pip
     - setuptools >=41.0.0
     - setuptools_scm >=2
     - wheel >=0.30.0
