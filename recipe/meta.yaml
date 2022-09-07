@@ -10,7 +10,7 @@ source:
 
 build:
   number: 0
-  skip: true  # [py<34]
+  skip: true  # [py<36]
   script: {{ PYTHON }} -m pip install . -vv
   entry_points:
     - virtualenv = virtualenv.__main__:run_with_catch
