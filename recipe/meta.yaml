@@ -1,4 +1,4 @@
-{% set version = "20.4.6" %}
+{% set version = "20.16.2" %}
 
 package:
   name: virtualenv
@@ -6,7 +6,7 @@ package:
 
 source:
   url: https://pypi.io/packages/source/v/virtualenv/virtualenv-{{ version }}.tar.gz
-  sha256: 72cf267afc04bf9c86ec932329b7e94db6a0331ae9847576daaa7ca3c86b29a4
+  sha256: 0ef5be6d07181946891f5abc8047fda8bc2f0b4b9bf222c64e6e8963baee76db
 
 build:
   number: 1
@@ -21,17 +21,17 @@ requirements:
   host:
     - python
     - pip >=18
-    - setuptools >=41
+    - setuptools >=41.0.0
     - setuptools_scm >=2
+    - wheel >=0.30.0
   run:
     - python
     - appdirs >=1.4.3,<2
     - distlib >=0.3.1,<1
-    - filelock >=3.0.0,<4
+    - filelock >=3.2,<4
     - importlib-metadata >=0.12  # [py<38]
     - importlib_resources >=1.0  # [py<37]
-    - pathlib2 >=2.3.3,<3  # [py<34 and not win]
-    - six >=1.9.0,<2   # keep it >=1.9.0 as it may cause problems on LTS platforms
+    - platformdirs >=2,<3
 
 test:
   imports:
