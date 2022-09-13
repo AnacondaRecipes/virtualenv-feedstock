@@ -26,7 +26,6 @@ requirements:
     - wheel >=0.30.0
   run:
     - python
-    - appdirs >=1.4.3,<2
     - distlib >=0.3.1,<1
     - filelock >=3.2,<4
     - importlib-metadata >=0.12  # [py<38]
