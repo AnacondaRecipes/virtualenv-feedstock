@@ -45,6 +45,7 @@ test:
 about:
   home: https://virtualenv.pypa.io/
   license: MIT
+  license_family: MIT
   license_file: LICENSE
   summary: Virtual Python Environment builder
   description: |
