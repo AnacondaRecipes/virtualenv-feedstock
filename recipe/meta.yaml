@@ -36,6 +36,13 @@ test:
   imports:
     - virtualenv
     - virtualenv.activation
+    - virtualenv.app_data
+    - virtualenv.config
+    - virtualenv.create
+    - virtualenv.discovery
+    - virtualenv.run
+    - virtualenv.seed
+    - virtualenv.util
   commands:
     - pip check
     - virtualenv --help
