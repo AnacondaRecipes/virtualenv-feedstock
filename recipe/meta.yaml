@@ -1,36 +1,35 @@
+{% set name = "virtualenv" %}
 {% set version = "20.17.1" %}
 
 package:
-  name: virtualenv
+  name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/v/virtualenv/virtualenv-{{ version }}.tar.gz
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
   sha256: f8b927684efc6f1cc206c9db297a570ab9ad0e51c16fa9e45487d36d1905c058
 
 build:
   number: 0
   skip: true  # [py<36]
-  script: {{ PYTHON }} -m pip install . -vv
+  script: {{ PYTHON }} -m pip install . -vv --no-deps
   entry_points:
     - virtualenv = virtualenv.__main__:run_with_catch
 
 requirements:
-  build:
-    - python                                 # [build_platform != target_platform]
   host:
     - python
     - pip
-    - setuptools >=41.0.0
-    - setuptools_scm >=2
-    - wheel >=0.30.0
+    - setuptools
+    - setuptools_scm
+    - wheel
   run:
     - python
-    - distlib >=0.3.1,<1
-    - filelock >=3.2,<4
-    - importlib-metadata >=0.12  # [py<38]
-    - importlib_resources >=1.0  # [py<37]
-    - platformdirs >=2,<3
+    - distlib >=0.3.6,<1
+    - filelock >=3.4.1,<4
+    - importlib_resources >=5.4  # [py<37]
+    - importlib-metadata >=4.8.3  # [py<38]
+    - platformdirs >=2.4,<3
 
 test:
   imports:
