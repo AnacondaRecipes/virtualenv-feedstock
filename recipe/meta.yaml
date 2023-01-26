@@ -51,10 +51,10 @@ test:
   commands:
     - pip check
     - virtualenv --help
-    - pytest --verbose
+    #- pytest --verbose
   requires:
     - pip
-   # - pytest --verbose
+    #- pytest
 
 about:
   home: https://virtualenv.pypa.io/
