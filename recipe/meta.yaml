@@ -1,38 +1,43 @@
-{% set version = "20.16.2" %}
+{% set name = "virtualenv" %}
+{% set version = "20.17.1" %}
+{% set checksum = "f8b927684efc6f1cc206c9db297a570ab9ad0e51c16fa9e45487d36d1905c058" %}
+{% set build = "0" %}
 
 package:
-  name: virtualenv
+  name: {{ name }}
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/v/virtualenv/virtualenv-{{ version }}.tar.gz
-  sha256: 0ef5be6d07181946891f5abc8047fda8bc2f0b4b9bf222c64e6e8963baee76db
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: {{ checksum }}
 
 build:
-  number: 0
-  skip: true  # [py<36]
-  script: {{ PYTHON }} -m pip install . -vv
+  number: {{ build }}
+  skip: True  # [py<36]
+  script: {{ PYTHON }} -m pip install . -vv --no-deps
   entry_points:
     - virtualenv = virtualenv.__main__:run_with_catch
 
 requirements:
-  build:
-    - python                                 # [build_platform != target_platform]
   host:
     - python
     - pip
-    - setuptools >=41.0.0
-    - setuptools_scm >=2
-    - wheel >=0.30.0
+    - setuptools
+    - setuptools_scm
+    - wheel
   run:
     - python
-    - distlib >=0.3.1,<1
-    - filelock >=3.2,<4
-    - importlib-metadata >=0.12  # [py<38]
-    - importlib_resources >=1.0  # [py<37]
-    - platformdirs >=2,<3
+    - distlib >=0.3.6,<1
+    - filelock >=3.4.1,<4
+    - importlib-metadata >=4.8.3  # [py<38]
+    - importlib_resources >=5.4  # [py<37]
+    - platformdirs >=2.4,<3
 
 test:
+  # optional-dependencies.test can be found here if we want to add upstream tests down the line:
+  # https://github.com/pypa/virtualenv/blob/main/pyproject.toml
+  #source_files:
+  #  - tests
   imports:
     - virtualenv
     - virtualenv.activation
@@ -46,8 +51,10 @@ test:
   commands:
     - pip check
     - virtualenv --help
+    #- pytest --verbose
   requires:
     - pip
+    #- pytest
 
 about:
   home: https://virtualenv.pypa.io/
