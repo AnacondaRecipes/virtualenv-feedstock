@@ -12,6 +12,7 @@ source:
   sha256: {{ checksum }}
 
 build:
+  # trigger 1
   number: {{ build }}
   skip: True  # [py<36]
   script: {{ PYTHON }} -m pip install . -vv --no-deps
