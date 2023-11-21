@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: f8b927684efc6f1cc206c9db297a570ab9ad0e51c16fa9e45487d36d1905c058
+  sha256: 02ece4f56fbf939dbbc33c0715159951d6bf14aaf5457b092e4548e1382455af
 
 build:
   # trigger 1
@@ -23,11 +23,11 @@ requirements:
     - pip
     - setuptools
     - wheel
-    - hatch-vcs >=0.3
-    - hatchling >=1.17.1
+    - hatch-vcs 0.3
+    - hatchling 1.18
   run:
     - python
-    - distlib >=3.9.1
+    - distlib >=0.3.7
     - filelock >=3.12.2
     - importlib_metadata >=6.6  # [py<38]
     - platformdirs >=3.9.1
