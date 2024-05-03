@@ -1,7 +1,7 @@
 {% set name = "virtualenv" %}
-{% set version = "20.17.1" %}
-{% set checksum = "f8b927684efc6f1cc206c9db297a570ab9ad0e51c16fa9e45487d36d1905c058" %}
-{% set build = "0" %}
+{% set version = "20.26.1" %}
+{% set checksum = "604bfdceaeece392802e6ae48e69cec49168b9c5f4a44e483963f9242eb0e78b" %}
+{% set build = 0 %}
 
 package:
   name: {{ name }}
@@ -12,10 +12,9 @@ source:
   sha256: {{ checksum }}
 
 build:
-  # trigger 1
   number: {{ build }}
-  skip: True  # [py<36]
-  script: {{ PYTHON }} -m pip install . -vv --no-deps
+  skip: True  # [py<37]
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   entry_points:
     - virtualenv = virtualenv.__main__:run_with_catch
 
@@ -23,16 +22,14 @@ requirements:
   host:
     - python
     - pip
-    - setuptools
-    - setuptools_scm
-    - wheel
+    - hatch-vcs >=0.3
+    - hatchling >=1.17.1
   run:
     - python
-    - distlib >=0.3.6,<1
-    - filelock >=3.4.1,<4
-    - importlib-metadata >=4.8.3  # [py<38]
-    - importlib_resources >=5.4  # [py<37]
-    - platformdirs >=2.4,<3
+    - distlib <1,>=0.3.7
+    - filelock <4,>=3.12.2
+    - platformdirs <5,>=3.9.1
+    - importlib-metadata >=6.6 # [py<38]
 
 test:
   # optional-dependencies.test can be found here if we want to add upstream tests down the line:
