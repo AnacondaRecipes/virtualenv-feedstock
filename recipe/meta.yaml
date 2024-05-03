@@ -29,6 +29,7 @@ requirements:
     - distlib <1,>=0.3.7
     - filelock <4,>=3.12.2
     - platformdirs <5,>=3.9.1
+    - importlib-metadata >=6.6 # [py<38]
 
 test:
   # optional-dependencies.test can be found here if we want to add upstream tests down the line:
