@@ -1,6 +1,6 @@
 {% set name = "virtualenv" %}
-{% set version = "20.26.1" %}
-{% set checksum = "604bfdceaeece392802e6ae48e69cec49168b9c5f4a44e483963f9242eb0e78b" %}
+{% set version = "20.28.0" %}
+{% set checksum = "2c9c3262bb8e7b87ea801d715fae4495e6032450c71d2309be9550e7364049aa" %}
 {% set build = 0 %}
 
 package:
@@ -8,12 +8,12 @@ package:
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
   sha256: {{ checksum }}
 
 build:
   number: {{ build }}
-  skip: True  # [py<37]
+  skip: True  # [py<38]
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   entry_points:
     - virtualenv = virtualenv.__main__:run_with_catch
@@ -26,33 +26,50 @@ requirements:
     - hatchling >=1.17.1
   run:
     - python
-    - distlib <1,>=0.3.7
-    - filelock <4,>=3.12.2
-    - platformdirs <5,>=3.9.1
-    - importlib-metadata >=6.6 # [py<38]
+    - distlib >=0.3.7,<1
+    - filelock >=3.12.2,<4
+    - platformdirs >=3.9.1,<5
 
 test:
-  # optional-dependencies.test can be found here if we want to add upstream tests down the line:
-  # https://github.com/pypa/virtualenv/blob/main/pyproject.toml
-  #source_files:
-  #  - tests
+  requires:
+    - pip
+  # Missing pytest-env and pytest-mock so most tests do not work.
+#    - flaky >=3.7
+#    - packaging >=23.1
+#    - pytest >=7.4
+#    - pytest-env >=0.8.2
+#    - pytest-mock >=3.11.1
+#    - pytest-randomly >=3.12
+#    - pytest-timeout >=2.1
+#  source_files:
+#    - tests
+#    - pyproject.toml
   imports:
     - virtualenv
     - virtualenv.activation
+    - virtualenv.activation.bash
+    - virtualenv.activation.batch
+    - virtualenv.activation.cshell
+    - virtualenv.activation.fish
+    - virtualenv.activation.nushell
+    - virtualenv.activation.powershell
+    - virtualenv.activation.python
     - virtualenv.app_data
     - virtualenv.config
+    - virtualenv.config.cli
     - virtualenv.create
     - virtualenv.discovery
     - virtualenv.run
+    - virtualenv.run.plugin
     - virtualenv.seed
+    - virtualenv.seed.embed
+    - virtualenv.seed.wheels
     - virtualenv.util
+    - virtualenv.util.path
+    - virtualenv.util.subprocess
   commands:
     - pip check
     - virtualenv --help
-    #- pytest --verbose
-  requires:
-    - pip
-    #- pytest
 
 about:
   home: https://virtualenv.pypa.io/
