@@ -1,6 +1,6 @@
 {% set name = "virtualenv" %}
-{% set version = "20.28.0" %}
-{% set checksum = "2c9c3262bb8e7b87ea801d715fae4495e6032450c71d2309be9550e7364049aa" %}
+{% set version = "21.5.0" %}
+{% set checksum = "98847aadf5e2037e0e4d2e19528eb3aca6f23906422e59a510bff231a6d32fce" %}
 {% set build = 0 %}
 
 package:
@@ -13,7 +13,7 @@ source:
 
 build:
   number: {{ build }}
-  skip: True  # [py<38]
+  skip: True  # [py<39]
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   entry_points:
     - virtualenv = virtualenv.__main__:run_with_catch
@@ -22,13 +22,15 @@ requirements:
   host:
     - python
     - pip
-    - hatch-vcs >=0.3
-    - hatchling >=1.17.1
+    - hatch-vcs >=0.4
+    - hatchling >=1.27
   run:
     - python
     - distlib >=0.3.7,<1
-    - filelock >=3.12.2,<4
+    - filelock >=3.24.2,<4
     - platformdirs >=3.9.1,<5
+    - python-discovery >=1.4.2
+    - typing-extensions >=4.13.2  # [py<311]
 
 test:
   requires:
@@ -54,6 +56,7 @@ test:
     - virtualenv.activation.nushell
     - virtualenv.activation.powershell
     - virtualenv.activation.python
+    - virtualenv.activation.xonsh
     - virtualenv.app_data
     - virtualenv.config
     - virtualenv.config.cli
