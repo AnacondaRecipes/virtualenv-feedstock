@@ -27,7 +27,7 @@ requirements:
   run:
     - python
     - distlib >=0.3.7,<1
-    - filelock >=3.16.1,<4
+    - filelock >=3.24.2,<4
     - platformdirs >=3.9.1,<5
     - python-discovery >=1.4.2
     - typing-extensions >=4.13.2  # [py<311]
