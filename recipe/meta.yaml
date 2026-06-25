@@ -33,7 +33,6 @@ requirements:
 test:
   requires:
     - pip
-  # Missing pytest-env and pytest-mock so most tests do not work.
     - flaky >=3.7
     - packaging >=23.1
     - pytest >=7.4
@@ -69,6 +68,7 @@ test:
     - virtualenv.util.subprocess
   commands:
     - pip check
+    # Missing pytest-env
     - pytest -vvv --ignore=tests/unit/seed/wheels/test_periodic_update.py --deselect=tests/unit/seed/wheels/test_acquire.py::test_get_wheel_download_cached
     - virtualenv --help
 
