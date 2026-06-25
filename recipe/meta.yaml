@@ -1,7 +1,5 @@
 {% set name = "virtualenv" %}
-{% set version = "21.5.0" %}
-{% set checksum = "98847aadf5e2037e0e4d2e19528eb3aca6f23906422e59a510bff231a6d32fce" %}
-{% set build = 0 %}
+{% set version = "21.5.1" %}
 
 package:
   name: {{ name }}
@@ -9,11 +7,11 @@ package:
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: {{ checksum }}
+  sha256: dca3bf98275a59c652b69d68e73433e597d977c2da9198882479d1a7188009c8
 
 build:
-  number: {{ build }}
-  skip: True  # [py<39]
+  number: 0
+  skip: true  # [py<39]
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   entry_points:
     - virtualenv = virtualenv.__main__:run_with_catch
@@ -36,16 +34,15 @@ test:
   requires:
     - pip
   # Missing pytest-env and pytest-mock so most tests do not work.
-#    - flaky >=3.7
-#    - packaging >=23.1
-#    - pytest >=7.4
-#    - pytest-env >=0.8.2
-#    - pytest-mock >=3.11.1
-#    - pytest-randomly >=3.12
-#    - pytest-timeout >=2.1
-#  source_files:
-#    - tests
-#    - pyproject.toml
+    - flaky >=3.7
+    - packaging >=23.1
+    - pytest >=7.4
+    - pytest-mock >=3.11.1
+    - pytest-randomly >=3.12
+    - pytest-timeout >=2.1
+  source_files:
+    - tests
+    - pyproject.toml
   imports:
     - virtualenv
     - virtualenv.activation
@@ -72,6 +69,7 @@ test:
     - virtualenv.util.subprocess
   commands:
     - pip check
+    - pytest -vvv --ignore=tests/unit/seed/wheels/test_periodic_update.py --deselect=tests/unit/seed/wheels/test_acquire.py::test_get_wheel_download_cached
     - virtualenv --help
 
 about:
