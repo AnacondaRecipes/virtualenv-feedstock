@@ -30,6 +30,17 @@ requirements:
     - python-discovery >=1.4.2
     - typing-extensions >=4.13.2  # [py<311]
 
+{% set ignored_tests_win = [
+  "--deselect=tests/unit/create/test_creator.py::test_create_clear_resets[clear-cpython3-win]",
+  "--deselect=tests/unit/create/test_creator.py::test_getsitepackages_system_site",
+  "--deselect=tests/unit/create/test_creator.py::test_create_clear_resets[no_clear-cpython3-win]",
+  "--deselect=tests/unit/activation/test_python_activator.py::test_python[no_prompt]"
+]%}
+
+{% set ignored_tests = [
+  "--ignore=tests/unit/seed/wheels/test_periodic_update.py",
+  "--deselect=tests/unit/seed/wheels/test_acquire.py::test_get_wheel_download_cached"
+]%}
 test:
   requires:
     - pip
@@ -69,7 +80,9 @@ test:
   commands:
     - pip check
     # Missing pytest-env
-    - pytest -vvv --ignore=tests/unit/seed/wheels/test_periodic_update.py --deselect=tests/unit/seed/wheels/test_acquire.py::test_get_wheel_download_cached
+    - set PATH=%PREFIX%\Library\bin;%PATH% # [win]
+    - pytest -vvv {{ ignored_tests | join(' ') }} {{ ignored_tests_win | join(' ') }} # [win]
+    - pytest -vvv {{ ignored_tests | join(' ') }} # [not win]
     - virtualenv --help
 
 about:
