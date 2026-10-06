@@ -21,10 +21,12 @@ requirements:
     - python
     - pip
     - hatch-vcs >=0.4
+    # Anaconda won't build and release for py<3.10
     - hatchling >=1.28  # [py>=310]
   run:
     - python
     - distlib >=0.3.7,<1
+    # Anaconda won't build and release for py<3.10
     - filelock >=3.24.2,<5  # [py>=310]
     - platformdirs >=3.9.1,<5
     - python-discovery >=1.6
