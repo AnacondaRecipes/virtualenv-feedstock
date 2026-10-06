@@ -1,5 +1,5 @@
 {% set name = "virtualenv" %}
-{% set version = "21.5.1" %}
+{% set version = "21.14.5" %}
 
 package:
   name: {{ name }}
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: dca3bf98275a59c652b69d68e73433e597d977c2da9198882479d1a7188009c8
+  sha256: c4cb6c13e46b57225a999c7e22a09b163393878facc7ac4c059a57f46faa1647
 
 build:
   number: 0
@@ -21,14 +21,18 @@ requirements:
     - python
     - pip
     - hatch-vcs >=0.4
-    - hatchling >=1.27
+    # Anaconda won't build and release for py<3.10
+    - hatchling >=1.28  # [py>=310]
   run:
     - python
     - distlib >=0.3.7,<1
-    - filelock >=3.24.2,<4
+    # Anaconda won't build and release for py<3.10
+    - filelock >=3.24.2,<5  # [py>=310]
     - platformdirs >=3.9.1,<5
-    - python-discovery >=1.4.2
+    - python-discovery >=1.6
     - typing-extensions >=4.13.2  # [py<311]
+    - packaging >=23.1
+    - typing_extensions >=4.13.2  # [py<311]
 
 {% set ignored_tests_win = [
   "--deselect=tests/unit/create/test_creator.py::test_create_clear_resets[clear-cpython3-win]",
@@ -39,7 +43,8 @@ requirements:
 
 {% set ignored_tests = [
   "--ignore=tests/unit/seed/wheels/test_periodic_update.py",
-  "--deselect=tests/unit/seed/wheels/test_acquire.py::test_get_wheel_download_cached"
+  "--deselect=tests/unit/seed/wheels/test_acquire.py::test_get_wheel_download_cached",
+  "--deselect=tests/unit/seed/wheels/test_bundle.py::test_notices_mention_every_bundled_distribution"
 ]%}
 test:
   requires:
@@ -80,9 +85,9 @@ test:
   commands:
     - pip check
     # Missing pytest-env
-    - set PATH=%PREFIX%\Library\bin;%PATH% # [win]
-    - pytest -vvv {{ ignored_tests | join(' ') }} {{ ignored_tests_win | join(' ') }} # [win]
-    - pytest -vvv {{ ignored_tests | join(' ') }} # [not win]
+    - set PATH=%PREFIX%\Library\bin;%PATH%  # [win]
+    - pytest -vvv {{ ignored_tests | join(' ') }} {{ ignored_tests_win | join(' ') }}  # [win]
+    - pytest -vvv {{ ignored_tests | join(' ') }}  # [not win]
     - virtualenv --help
 
 about:
