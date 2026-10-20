@@ -1,5 +1,16 @@
 {% set name = "virtualenv" %}
-{% set version = "21.14.5" %}
+{% set version = "21.14.11" %}
+{% set ignored_tests_win = [
+  "--deselect=tests/unit/create/test_creator.py::test_create_clear_resets[clear-cpython3-win]",
+  "--deselect=tests/unit/create/test_creator.py::test_getsitepackages_system_site",
+  "--deselect=tests/unit/create/test_creator.py::test_create_clear_resets[no_clear-cpython3-win]",
+  "--deselect=tests/unit/activation/test_python_activator.py::test_python[no_prompt]"
+] %}
+{% set ignored_tests = [
+  "--ignore=tests/unit/seed/wheels/test_periodic_update.py",
+  "--deselect=tests/unit/seed/wheels/test_acquire.py::test_get_wheel_download_cached",
+  "--deselect=tests/unit/seed/wheels/test_bundle.py::test_notices_mention_every_bundled_distribution"
+] %}
 
 package:
   name: {{ name }}
@@ -7,7 +18,7 @@ package:
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: c4cb6c13e46b57225a999c7e22a09b163393878facc7ac4c059a57f46faa1647
+  sha256: 593052d8477ea8c55a842387ce111bd08c72618f0c1133c302cafe335e570a57
 
 build:
   number: 0
@@ -20,32 +31,20 @@ requirements:
   host:
     - python
     - pip
-    - hatch-vcs >=0.4
+    - hatch-vcs >=0.5
     # Anaconda won't build and release for py<3.10
     - hatchling >=1.28  # [py>=310]
   run:
     - python
-    - distlib >=0.3.7,<1
+    - distlib <1,>=0.4.3
     # Anaconda won't build and release for py<3.10
     - filelock >=3.24.2,<5  # [py>=310]
-    - platformdirs >=3.9.1,<5
-    - python-discovery >=1.6
+    - platformdirs <5,>=4.4
+    - python-discovery >=1.6.1
     - typing-extensions >=4.13.2  # [py<311]
-    - packaging >=23.1
+    - packaging >=26.3
     - typing_extensions >=4.13.2  # [py<311]
 
-{% set ignored_tests_win = [
-  "--deselect=tests/unit/create/test_creator.py::test_create_clear_resets[clear-cpython3-win]",
-  "--deselect=tests/unit/create/test_creator.py::test_getsitepackages_system_site",
-  "--deselect=tests/unit/create/test_creator.py::test_create_clear_resets[no_clear-cpython3-win]",
-  "--deselect=tests/unit/activation/test_python_activator.py::test_python[no_prompt]"
-]%}
-
-{% set ignored_tests = [
-  "--ignore=tests/unit/seed/wheels/test_periodic_update.py",
-  "--deselect=tests/unit/seed/wheels/test_acquire.py::test_get_wheel_download_cached",
-  "--deselect=tests/unit/seed/wheels/test_bundle.py::test_notices_mention_every_bundled_distribution"
-]%}
 test:
   requires:
     - pip
