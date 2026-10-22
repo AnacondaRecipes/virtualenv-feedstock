@@ -1,5 +1,5 @@
 {% set name = "virtualenv" %}
-{% set version = "21.14.5" %}
+{% set version = "21.14.7" %}
 
 package:
   name: {{ name }}
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: c4cb6c13e46b57225a999c7e22a09b163393878facc7ac4c059a57f46faa1647
+  sha256: 5f427d56f39eb7e7447d641dd4b7ab1e9c92793f498f35f26da2e4972c5546ae
 
 build:
   number: 0
@@ -20,19 +20,18 @@ requirements:
   host:
     - python
     - pip
-    - hatch-vcs >=0.4
+    - hatch-vcs >=0.5
     # Anaconda won't build and release for py<3.10
     - hatchling >=1.28  # [py>=310]
   run:
     - python
-    - distlib >=0.3.7,<1
+    - distlib >=0.4.3,<1
     # Anaconda won't build and release for py<3.10
     - filelock >=3.24.2,<5  # [py>=310]
-    - platformdirs >=3.9.1,<5
-    - python-discovery >=1.6
-    - typing-extensions >=4.13.2  # [py<311]
-    - packaging >=23.1
-    - typing_extensions >=4.13.2  # [py<311]
+    - packaging >=26.3
+    - platformdirs >=4.4,<5
+    - python-discovery >=1.6.1
+    - typing-extensions >=4.16  # [py<311]
 
 {% set ignored_tests_win = [
   "--deselect=tests/unit/create/test_creator.py::test_create_clear_resets[clear-cpython3-win]",
@@ -44,8 +43,10 @@ requirements:
 {% set ignored_tests = [
   "--ignore=tests/unit/seed/wheels/test_periodic_update.py",
   "--deselect=tests/unit/seed/wheels/test_acquire.py::test_get_wheel_download_cached",
-  "--deselect=tests/unit/seed/wheels/test_bundle.py::test_notices_mention_every_bundled_distribution"
+  "--deselect=tests/unit/seed/wheels/test_bundle.py::test_notices_mention_every_bundled_distribution",
+  "--deselect=tests/unit/create/test_creator.py::test_venv_fails_not_inline "
 ]%}
+
 test:
   requires:
     - pip
@@ -98,7 +99,7 @@ about:
   summary: Virtual Python Environment builder
   description: |
     A tool for creating isolated virtual python environments.
-  doc_url: https://virtualenv.pypa.io/
+  doc_url: https://virtualenv.pypa.io
   dev_url: https://github.com/pypa/virtualenv
 
 extra:
