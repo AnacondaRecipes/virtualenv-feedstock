@@ -1,5 +1,17 @@
 {% set name = "virtualenv" %}
-{% set version = "21.14.7" %}
+{% set version = "21.14.13" %}
+{% set ignored_tests_win = [
+  "--deselect=tests/unit/create/test_creator.py::test_create_clear_resets[clear-cpython3-win]",
+  "--deselect=tests/unit/create/test_creator.py::test_getsitepackages_system_site",
+  "--deselect=tests/unit/create/test_creator.py::test_create_clear_resets[no_clear-cpython3-win]",
+  "--deselect=tests/unit/activation/test_python_activator.py::test_python[no_prompt]"
+] %}
+{% set ignored_tests = [
+  "--ignore=tests/unit/seed/wheels/test_periodic_update.py",
+  "--deselect=tests/unit/seed/wheels/test_acquire.py::test_get_wheel_download_cached",
+  "--deselect=tests/unit/seed/wheels/test_bundle.py::test_notices_mention_every_bundled_distribution",
+  "--deselect=tests/unit/create/test_creator.py::test_venv_fails_not_inline "
+] %}
 
 package:
   name: {{ name }}
@@ -7,7 +19,7 @@ package:
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 5f427d56f39eb7e7447d641dd4b7ab1e9c92793f498f35f26da2e4972c5546ae
+  sha256: de5307ba4b9a0001d9c8ea02832d38f63ca432880f416c1bface61c4323fd905
 
 build:
   number: 0
@@ -25,27 +37,14 @@ requirements:
     - hatchling >=1.28  # [py>=310]
   run:
     - python
-    - distlib >=0.4.3,<1
+    - distlib <1,>=0.4.3
     # Anaconda won't build and release for py<3.10
     - filelock >=3.24.2,<5  # [py>=310]
     - packaging >=26.3
-    - platformdirs >=4.4,<5
+    - platformdirs <5,>=4.4
     - python-discovery >=1.6.1
     - typing-extensions >=4.16  # [py<311]
-
-{% set ignored_tests_win = [
-  "--deselect=tests/unit/create/test_creator.py::test_create_clear_resets[clear-cpython3-win]",
-  "--deselect=tests/unit/create/test_creator.py::test_getsitepackages_system_site",
-  "--deselect=tests/unit/create/test_creator.py::test_create_clear_resets[no_clear-cpython3-win]",
-  "--deselect=tests/unit/activation/test_python_activator.py::test_python[no_prompt]"
-]%}
-
-{% set ignored_tests = [
-  "--ignore=tests/unit/seed/wheels/test_periodic_update.py",
-  "--deselect=tests/unit/seed/wheels/test_acquire.py::test_get_wheel_download_cached",
-  "--deselect=tests/unit/seed/wheels/test_bundle.py::test_notices_mention_every_bundled_distribution",
-  "--deselect=tests/unit/create/test_creator.py::test_venv_fails_not_inline "
-]%}
+    - typing_extensions >=4.16  # [py<311]
 
 test:
   requires:
