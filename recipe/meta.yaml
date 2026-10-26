@@ -49,6 +49,14 @@ requirements:
 
 # New tests that fail on osx. Seems to be related to system reporting support for gbk locale, but
 # system csh not supporting it.
+# >       assert f"({prompt}) ".encode() in result.stdout + result.stderr
+# E       assert b'(\xe4\xb8\xad^b) ' in (b'Warning: no access to tty (Undefined error: 0).\nThus no job control in this shell.\n> > exit\n' + b"Unmatched '''.\n")
+# E        +  where b'(\xe4\xb8\xad^b) ' = <built-in method encode of str object at 0x106110e70>()
+# E        +    where <built-in method encode of str object at 0x106110e70> = '(\u4e2d^b) '.encode
+# E        +  and   b'Warning: no access to tty (Undefined error: 0).\nThus no job control in this shell.\n> > exit\n' = CompletedProcess(args=['/bin/tcsh', '-f', '-i'], returncode=0, stdout=b'Warning: no access to tty (Undefined error: 0).\nThus no job control in this shell.\n> > exit\n', stderr=b"Unmatched '''.\n").stdout
+# E        +  and   b"Unmatched '''.\n" = CompletedProcess(args=['/bin/tcsh', '-f', '-i'], returncode=0, stdout=b'Warning: no access to tty (Undefined error: 0).\nThus no job control in this shell.\n> > exit\n', stderr=b"Unmatched '''.\n").stderr
+# Note that the error reports that tcsh doesn't have access to a tty is incorrect. Other tests of this variety succeed, just the
+# tests relying on gbk locale fail.
 {% set ignored_tests_osx = [
   "--deselect=tests/unit/activation/test_csh.py::test_cshell_renders_prompt_literally[gbk-caret]",
   "--deselect=tests/unit/activation/test_csh.py::test_cshell_renders_prompt_literally[gbk-history]",
