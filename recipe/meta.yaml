@@ -47,8 +47,7 @@ requirements:
   "--deselect=tests/unit/create/test_creator.py::test_venv_fails_not_inline "
 ] %}
 
-# New tests that fail on osx. Seems to be related to system reporting support for gbk locale, but
-# system csh not supporting it.
+# gbk-locale prompt tests fail only against macOS /bin/tcsh ("Unmatched '''"); other prompt cases pass. Linux skips (no tcsh).
 # >       assert f"({prompt}) ".encode() in result.stdout + result.stderr
 # E       assert b'(\xe4\xb8\xad^b) ' in (b'Warning: no access to tty (Undefined error: 0).\nThus no job control in this shell.\n> > exit\n' + b"Unmatched '''.\n")
 # E        +  where b'(\xe4\xb8\xad^b) ' = <built-in method encode of str object at 0x106110e70>()
