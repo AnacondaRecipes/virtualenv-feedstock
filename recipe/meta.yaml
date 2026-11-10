@@ -60,7 +60,6 @@ requirements:
     - platformdirs <5,>=4.4
     - python-discovery >=1.6.1
     - typing-extensions >=4.16  # [py<311]
-    - typing_extensions >=4.16  # [py<311]
 
 test:
   requires:
