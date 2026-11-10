@@ -1,13 +1,40 @@
 {% set name = "virtualenv" %}
-{% set version = "21.14.13" %}
+{% set version = "21.15.6" %}
+{% set ignored_tests_win = [
+  "--deselect=tests/unit/create/test_creator.py::test_create_clear_resets[clear-cpython3-win]",
+  "--deselect=tests/unit/create/test_creator.py::test_getsitepackages_system_site",
+  "--deselect=tests/unit/create/test_creator.py::test_create_clear_resets[no_clear-cpython3-win]",
+  "--deselect=tests/unit/activation/test_python_activator.py::test_python[no_prompt]"
+] %}
+{% set ignored_tests = [
+  "--ignore=tests/unit/seed/wheels/test_periodic_update.py",
+  "--deselect=tests/unit/seed/wheels/test_acquire.py::test_get_wheel_download_cached",
+  "--deselect=tests/unit/seed/wheels/test_bundle.py::test_notices_mention_every_bundled_distribution",
+  "--deselect=tests/unit/create/test_creator.py::test_venv_fails_not_inline "
+] %}
+{% set ignored_tests_osx = [
+  "--deselect=tests/unit/activation/test_csh.py::test_cshell_renders_prompt_literally[gbk-caret]",
+  "--deselect=tests/unit/activation/test_csh.py::test_cshell_renders_prompt_literally[gbk-history]",
+  "--deselect=tests/unit/activation/test_csh.py::test_cshell_renders_prompt_literally[gbk-backslash-caret]",
+  "--deselect=tests/unit/activation/test_csh.py::test_cshell_renders_prompt_literally[gbk-backslash-history]"
+] %}
 
+# gbk-locale prompt tests fail only against macOS /bin/tcsh ("Unmatched '''"); other prompt cases pass. Linux skips (no tcsh).
+# >       assert f"({prompt}) ".encode() in result.stdout + result.stderr
+# E       assert b'(\xe4\xb8\xad^b) ' in (b'Warning: no access to tty (Undefined error: 0).\nThus no job control in this shell.\n> > exit\n' + b"Unmatched '''.\n")
+# E        +  where b'(\xe4\xb8\xad^b) ' = <built-in method encode of str object at 0x106110e70>()
+# E        +    where <built-in method encode of str object at 0x106110e70> = '(\u4e2d^b) '.encode
+# E        +  and   b'Warning: no access to tty (Undefined error: 0).\nThus no job control in this shell.\n> > exit\n' = CompletedProcess(args=['/bin/tcsh', '-f', '-i'], returncode=0, stdout=b'Warning: no access to tty (Undefined error: 0).\nThus no job control in this shell.\n> > exit\n', stderr=b"Unmatched '''.\n").stdout
+# E        +  and   b"Unmatched '''.\n" = CompletedProcess(args=['/bin/tcsh', '-f', '-i'], returncode=0, stdout=b'Warning: no access to tty (Undefined error: 0).\nThus no job control in this shell.\n> > exit\n', stderr=b"Unmatched '''.\n").stderr
+# Note that the error reports that tcsh doesn't have access to a tty is incorrect. Other tests of this variety succeed, just the
+# tests relying on gbk locale fail.
 package:
   name: {{ name }}
   version: {{ version }}
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: de5307ba4b9a0001d9c8ea02832d38f63ca432880f416c1bface61c4323fd905
+  sha256: c8b65c7d206ca6ef18de9352c160b3f04f66fff9f6b0ec8fd31f14688eba52c4
 
 build:
   number: 0
@@ -23,45 +50,17 @@ requirements:
     - hatch-vcs >=0.5
     # Anaconda won't build and release for py<3.10
     - hatchling >=1.28  # [py>=310]
+    - hatch-fancy-pypi-readme >=25.1
   run:
     - python
-    - distlib >=0.4.3,<1
+    - distlib <1,>=0.4.3
     # Anaconda won't build and release for py<3.10
     - filelock >=3.24.2,<5  # [py>=310]
     - packaging >=26.3
-    - platformdirs >=4.4,<5
+    - platformdirs <5,>=4.4
     - python-discovery >=1.6.1
     - typing-extensions >=4.16  # [py<311]
-
-{% set ignored_tests_win = [
-  "--deselect=tests/unit/create/test_creator.py::test_create_clear_resets[clear-cpython3-win]",
-  "--deselect=tests/unit/create/test_creator.py::test_getsitepackages_system_site",
-  "--deselect=tests/unit/create/test_creator.py::test_create_clear_resets[no_clear-cpython3-win]",
-  "--deselect=tests/unit/activation/test_python_activator.py::test_python[no_prompt]"
-] %}
-
-{% set ignored_tests = [
-  "--ignore=tests/unit/seed/wheels/test_periodic_update.py",
-  "--deselect=tests/unit/seed/wheels/test_acquire.py::test_get_wheel_download_cached",
-  "--deselect=tests/unit/seed/wheels/test_bundle.py::test_notices_mention_every_bundled_distribution",
-  "--deselect=tests/unit/create/test_creator.py::test_venv_fails_not_inline "
-] %}
-
-# gbk-locale prompt tests fail only against macOS /bin/tcsh ("Unmatched '''"); other prompt cases pass. Linux skips (no tcsh).
-# >       assert f"({prompt}) ".encode() in result.stdout + result.stderr
-# E       assert b'(\xe4\xb8\xad^b) ' in (b'Warning: no access to tty (Undefined error: 0).\nThus no job control in this shell.\n> > exit\n' + b"Unmatched '''.\n")
-# E        +  where b'(\xe4\xb8\xad^b) ' = <built-in method encode of str object at 0x106110e70>()
-# E        +    where <built-in method encode of str object at 0x106110e70> = '(\u4e2d^b) '.encode
-# E        +  and   b'Warning: no access to tty (Undefined error: 0).\nThus no job control in this shell.\n> > exit\n' = CompletedProcess(args=['/bin/tcsh', '-f', '-i'], returncode=0, stdout=b'Warning: no access to tty (Undefined error: 0).\nThus no job control in this shell.\n> > exit\n', stderr=b"Unmatched '''.\n").stdout
-# E        +  and   b"Unmatched '''.\n" = CompletedProcess(args=['/bin/tcsh', '-f', '-i'], returncode=0, stdout=b'Warning: no access to tty (Undefined error: 0).\nThus no job control in this shell.\n> > exit\n', stderr=b"Unmatched '''.\n").stderr
-# Note that the error reports that tcsh doesn't have access to a tty is incorrect. Other tests of this variety succeed, just the
-# tests relying on gbk locale fail.
-{% set ignored_tests_osx = [
-  "--deselect=tests/unit/activation/test_csh.py::test_cshell_renders_prompt_literally[gbk-caret]",
-  "--deselect=tests/unit/activation/test_csh.py::test_cshell_renders_prompt_literally[gbk-history]",
-  "--deselect=tests/unit/activation/test_csh.py::test_cshell_renders_prompt_literally[gbk-backslash-caret]",
-  "--deselect=tests/unit/activation/test_csh.py::test_cshell_renders_prompt_literally[gbk-backslash-history]"
-] %}
+    - typing_extensions >=4.16  # [py<311]
 
 test:
   requires:
